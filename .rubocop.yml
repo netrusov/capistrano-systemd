@@ -1,0 +1,23 @@
+AllCops:
+  NewCops: enable
+
+Layout/BlockAlignment:
+  EnforcedStyleAlignWith: start_of_block
+
+Layout/MultilineMethodCallIndentation:
+  EnforcedStyle: indented_relative_to_receiver
+
+Lint/EmptyFile:
+  Exclude:
+    - "lib/capistrano-systemd.rb"
+
+Metrics/BlockLength:
+  ExcludedMethods:
+    - namespace
+
+Naming/FileName:
+  Exclude:
+    - "lib/capistrano-systemd.rb"
+
+Style/Documentation:
+  Enabled: false
