@@ -1,0 +1,27 @@
+[Unit]
+PartOf=puma.service
+
+[Service]
+Type=simple
+WorkingDirectory=<%= current_path %>
+
+Environment="RACK_ENV=<%= fetch(:rails_env) %>"
+Environment="RAILS_ENV=<%= fetch(:rails_env) %>"
+
+ExecStart=/bin/bash -c '<%= SSHKit.config.command_map[:puma] %> --config "<%= fetch(:puma_conf) %>" --state "<%= fetch(:puma_state) %>" --pidfile "<%= fetch(:puma_pid) %>" --bind "<%= fetch(:puma_bind) %>" --tag "slice:%i"'
+ExecReload=/bin/bash -c '<%= SSHKit.config.command_map[:pumactl] %> --config-file "<%= fetch(:puma_conf) %>" --state "<%= fetch(:puma_state) %>" phased-restart'
+
+RestartSec=3
+Restart=on-failure
+
+StandardInput=null
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=%n
+
+KillMode=mixed
+
+TimeoutStopSec=5
+
+[Install]
+WantedBy=puma.service

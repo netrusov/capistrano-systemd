@@ -1,0 +1,10 @@
+[Unit]
+PartOf=<%= fetch(:systemd_master_service) %>
+
+[Service]
+Type=oneshot
+ExecStart=/bin/true
+RemainAfterExit=yes
+
+[Install]
+WantedBy=<%= fetch(:systemd_master_service) %>

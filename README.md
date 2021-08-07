@@ -23,6 +23,33 @@ require 'capistrano/systemd'
 install_plugin Capistrano::Systemd
 ```
 
+## Prerequisites
+
+You must enable [lingering](https://www.freedesktop.org/software/systemd/man/loginctl.html#enable-linger%20USER%E2%80%A6) on all target hosts:
+
+```shell script
+sudo loginctl enable-lingering <USER>
+```
+
+## Configuration
+
+See [set_defaults](lib/capistrano/systemd.rb) for default configuration options.
+
+If you want to create your own Systemd units, then place them in any directory inside your repo, change `systemd_templates_path` setting, and specify roles for those units:
+
+```ruby
+set :systemd_templates_path, -> { 'path/to/your/directory' }
+set :systemd_roles, -> do
+  {
+    puma: fetch(:puma_role),
+    sidekiq: fetch(:puma_role),
+    your_unit: fetch(:your_unit_role) # it's an example; you must use a real name, obviously
+  }
+end
+```
+
+Be sure to add `.erb` extension for each file, otherwise `capistrano-systemd` won't find them.
+
 ## Usage
 
 ```shell script

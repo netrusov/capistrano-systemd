@@ -1,0 +1,30 @@
+[Unit]
+PartOf=sidekiq.service
+
+[Service]
+Type=simple
+WorkingDirectory=<%= current_path %>
+
+Environment="RACK_ENV=<%= fetch(:rails_env) %>"
+Environment="RAILS_ENV=<%= fetch(:rails_env) %>"
+
+ExecStart=/bin/bash -c '<%= SSHKit.config.command_map[:sidekiq] %> --config <%= fetch(:sidekiq_config) %> --concurrency <%= fetch(:sidekiq_concurrency) %>'
+ExecStop=/bin/kill -TERM $MAINPID
+
+# this will actually tell sidekiq to work in "quiet" mode; it will not accept new messages until restart
+ExecReload=/bin/kill -TSTP $MAINPID
+
+RestartSec=3
+Restart=on-failure
+
+StandardInput=null
+StandardOutput=syslog
+StandardError=syslog
+SyslogIdentifier=%n
+
+KillMode=mixed
+
+TimeoutStopSec=<%= fetch(:sidekiq_timeout) %>
+
+[Install]
+WantedBy=sidekiq.service

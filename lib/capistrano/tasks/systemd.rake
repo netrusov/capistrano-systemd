@@ -26,9 +26,9 @@ namespace :systemd do
 
   desc 'Show systemd service status'
   task :status do |task, args|
-    on roles(:all) do
-      task.reenable
+    task.reenable
 
+    on roles(:all) do
       begin
         execute :systemctl, '--user', :status, *args.to_a
       rescue SSHKit::Command::Failed
