@@ -28,7 +28,7 @@ install_plugin Capistrano::Systemd
 You must enable [lingering](https://www.freedesktop.org/software/systemd/man/loginctl.html#enable-linger%20USER%E2%80%A6) on all target hosts:
 
 ```shell script
-sudo loginctl enable-lingering <USER>
+sudo loginctl enable-linger <USER>
 ```
 
 ## Configuration
